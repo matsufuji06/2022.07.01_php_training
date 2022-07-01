@@ -1,4 +1,7 @@
 <?php
+
+header('X-FRAME-OPTIONS:DENY');
+
   // スーパーグローバル変数 php 9種類
   // 連想配列
   // if(!empty($_POST)) {
