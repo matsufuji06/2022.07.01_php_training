@@ -2,9 +2,25 @@
   // スーパーグローバル変数 php 9種類
   // 連想配列
   if(!empty($_GET)) {
+    echo '<pre>';
     var_dump($_GET);
-
+    echo '</pre>';
+    
   }
+
+  // 入力、確認、完了 input.php, conform.php, tahnks.php
+  // input.php
+
+  $pageFlag = 0;
+
+  if(!empty($_GET['btn_confirm'])) {
+    $pageFlag = 1;
+  }
+
+  if(!empty($_GET['btn_submit'])) {
+    $pageFlag = 2;
+  }
+
 
 
 ?>
@@ -20,18 +36,43 @@
 </head>
 <body>
 
-  <form method="GET" action="input.php" >
-    氏名
-    <input type="text" name="your_name">
-    <br>
+  <?php if($pageFlag === 0) : ?>
+    <form method="GET" action="input.php" >
+      氏名
+      <input type="text" name="your_name">
+      <br>
 
-    <input type="checkbox" name="sports[]" value="野球">野球</input>
-    <input type="checkbox" name="sports[]" value="サッカー">サッカー</input>
-    <input type="checkbox" name="sports[]" value="バスケ">バスケ</input>
-    <br>
+      メールアドレス
+      <input type="email" name="email">
+      <br>
 
-    <input type="submit" value="送信">
-  </form>
+      <input type="submit" name="btn_confirm" value="確認する">
+
+    </form>
+  <?php endif; ?>
+
+  <?php if($pageFlag === 1) : ?>
+    <form method="GET" action="input.php" >
+      氏名
+      <?php echo $_GET['your_name']; ?>
+      <br>
+      
+      メールアドレス
+      <?php echo $_GET['email']; ?>
+      <br>
+
+      <input type="submit" name="btn_submit" value="送信する">
+
+      <input type="hidden" name="your_name" value="<?php echo $_GET['your_name']; ?>">
+      <input type="hidden" name="email" value="<?php echo $_GET['your_name']; ?>">
+
+    </form>
+  <?php endif; ?>
+
+  <?php if($pageFlag === 2) : ?>
+    送信が完了しました。
+  <?php endif; ?>
+
   
 </body>
 </html>
