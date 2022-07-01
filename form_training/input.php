@@ -1,9 +1,9 @@
 <?php
   // スーパーグローバル変数 php 9種類
   // 連想配列
-  if(!empty($_GET)) {
+  if(!empty($_POST)) {
     echo '<pre>';
-    var_dump($_GET);
+    var_dump($_POST);
     echo '</pre>';
     
   }
@@ -13,11 +13,11 @@
 
   $pageFlag = 0;
 
-  if(!empty($_GET['btn_confirm'])) {
+  if(!empty($_POST['btn_confirm'])) {
     $pageFlag = 1;
   }
 
-  if(!empty($_GET['btn_submit'])) {
+  if(!empty($_POST['btn_submit'])) {
     $pageFlag = 2;
   }
 
@@ -37,13 +37,13 @@
 <body>
 
   <?php if($pageFlag === 0) : ?>
-    <form method="GET" action="input.php" >
+    <form method="POST" action="input.php" >
       氏名
-      <input type="text" name="your_name">
+      <input type="text" name="your_name" value="<?php if(!empty($_POST['your_name'])){ echo $_POST['your_name']; } ?>">
       <br>
 
       メールアドレス
-      <input type="email" name="email">
+      <input type="email" name="email" value="<?php if(!empty($_POST['email'])){ echo $_POST['email']; } ?>">
       <br>
 
       <input type="submit" name="btn_confirm" value="確認する">
@@ -52,19 +52,21 @@
   <?php endif; ?>
 
   <?php if($pageFlag === 1) : ?>
-    <form method="GET" action="input.php" >
+    <form method="POST" action="input.php" >
       氏名
-      <?php echo $_GET['your_name']; ?>
+      <?php echo $_POST['your_name']; ?>
       <br>
       
       メールアドレス
-      <?php echo $_GET['email']; ?>
+      <?php echo $_POST['email']; ?>
       <br>
 
+      
+      <input type="submit" name="back" value="戻る">
       <input type="submit" name="btn_submit" value="送信する">
 
-      <input type="hidden" name="your_name" value="<?php echo $_GET['your_name']; ?>">
-      <input type="hidden" name="email" value="<?php echo $_GET['your_name']; ?>">
+      <input type="hidden" name="your_name" value="<?php echo $_POST['your_name']; ?>">
+      <input type="hidden" name="email" value="<?php echo $_POST['email']; ?>">
 
     </form>
   <?php endif; ?>
