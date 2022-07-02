@@ -2,6 +2,8 @@
 
 session_start();
 
+require 'validation.php';
+
 header('X-FRAME-OPTIONS:DENY');
 
   // スーパーグローバル変数 php 9種類
@@ -29,7 +31,11 @@ function h($str) {
 
   $pageFlag = 0;
 
-  if(!empty($_POST['btn_confirm'])) {
+  // バリデーションの実行と受け取り
+  $errors = validation($_POST);
+
+
+  if(!empty($_POST['btn_confirm']) && empty($errors)) {
     $pageFlag = 1;
   }
 
@@ -63,6 +69,16 @@ function h($str) {
 
     ?>
 
+    <?php if(!empty($errors) && !empty($_POST['btn_confirm'])): ?>
+      <?php echo '<ul>' ;?>
+        <?php 
+          foreach($errors as $error) {
+          echo '<li>' . $error . '</li>' ;
+          }
+        ?>
+      <?php echo '</ul>' ;?>
+    <?php endif; ?>
+
     <form method="POST" action="input.php" >
       氏名
       <input type="text" name="your_name" value="<?php if(!empty($_POST['your_name'])){ echo h($_POST['your_name']); } ?>">
@@ -87,7 +103,7 @@ function h($str) {
       年齢
       <select name="age" id="">
         <option value="">選択してください</option>
-        <option value="1" selected>〜１９歳</option>
+        <option value="1">〜１９歳</option>
         <option value="2">２０歳〜２９歳</option>
         <option value="3">３０歳〜３９歳</option>
         <option value="4">４０歳〜４９歳</option>
@@ -145,9 +161,8 @@ function h($str) {
         <br>
 
         お問い合わせ内容
-        <textarea name="contact">
-          <?php if(!empty($_POST['contact'])){ echo h($_POST['contact']); } ?>
-        </textarea>
+          <?php echo h($_POST['contact']); ?>
+
         <br>
 
         注意事項のチェック
